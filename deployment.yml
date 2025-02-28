@@ -1,5 +1,5 @@
-apiVersion: apps/v1
 kind: Deployment
+apiVersion: apps/v1
 metadata:
   name: mydeployment
 spec:
@@ -13,7 +13,19 @@ spec:
         name: deployment1
     spec:
       containers:
-        - name: container1
-          image: shamashaik19/image1:latest
+        - name: c00
+          image: shamashaik19/shaimage:latest
           ports:
             - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: demoservices
+spec:
+  ports:
+    - port: 8000
+      targetPort: 80
+  selector:
+    name: deployment1
+  type: NodePort
