@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: c00
-          image: shamashaik19/shaimage:latest
+          image: shamashaik19/bootstrap:latest
           ports:
             - containerPort: 80
 ---
