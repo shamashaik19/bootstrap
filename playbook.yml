@@ -16,5 +16,12 @@
     become : yes
     become_user : root
 
-  - name: Deploy Docker Container
-    command: docker run -itd -p 8084:80 shamashaik19/freelancerimage
+  - name: Remove old container if exists
+    shell: docker rm -f freelancer || true
+
+  - name: Pull latest image
+    shell: docker pull shamashaik19/freelancerimage
+
+  - name: Run container
+    shell: docker run -d -p 8084:80 --name freelancer shamashaik19/freelancerimage
+
