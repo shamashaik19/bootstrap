@@ -20,8 +20,8 @@
     shell: docker rm -f freelancer || true
 
   - name: Pull latest image
-    shell: docker pull shamashaik19/freelancerimage
+    shell: docker pull shamashaik19/freelancerimage:latest
 
   - name: Run container
-    shell: docker run -d -p 8084:80 --name freelancer shamashaik19/freelancerimage
+    shell: docker run -d -p 80:80 --name freelancer shamashaik19/freelancerimage:latest
 
