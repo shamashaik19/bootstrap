@@ -23,5 +23,5 @@
     shell: docker pull shamashaik19/freelancerimage:latest
 
   - name: Run container
-    shell: docker run -d -p 80:80 --name freelancer shamashaik19/freelancerimage:latest
+    shell: docker run -d -p 80:80 --name freelancercont shamashaik19/freelancerimage:latest
 
