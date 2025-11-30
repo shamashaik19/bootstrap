@@ -1,1 +1,50 @@
-
+pipeline{
+    agent any
+    stages{
+        stage('git checkout') {
+            steps {
+                git url: "https://github.com/shamashaik19/bootstrap.git"
+            }
+        }
+        stage('compile project') {
+            steps {
+                sh "mvn compile"
+            }
+        }
+        stage('test project') {
+            steps {
+                sh "mvn test"
+            }
+        }
+        stage('package'){
+            steps {
+                sh "mvn package"
+            }
+        }
+        stage('docker build') {
+            steps {
+                echo 'Creating Docker image...'
+                sh "docker build -t shamashaik19/freelancerimage:latest ."
+            }
+        }
+        stage('Push to DockerHub') {
+            steps {
+                echo 'Pushing the Docker image to DockerHub...'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-pwd', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
+                    sh "docker push shamashaik19/freelancerimage:latest"
+                }
+            }
+        }
+      stage('Run Container') {
+            steps {
+                echo 'Running Docker container on server...'
+                sh """
+                    docker stop freelancer_container || true
+                    docker rm freelancer_container || true
+                    docker run -d --name freelancer_container -p 80:80 shamashaik19/freelancerimage:latest
+                """
+            }
+        }
+    }
+}
