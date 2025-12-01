@@ -1,0 +1,32 @@
+@Library('my-shared-library') _
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git url: 'https://github.com/shamashaik19/bootstrap.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                mavenBuild()
+            }
+        }
+
+        stage('Test') {
+            steps {
+                runTests()
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                dockerBuild('shamashaik19/freelancerimage:latest')
+            }
+        }
+    }
+}
+
